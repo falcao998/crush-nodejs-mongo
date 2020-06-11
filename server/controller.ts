@@ -17,7 +17,7 @@ class Controller {
         return Model.findById(id);
     }
     selectOne(req, res) {
-        const id = { _id: req.param.id };
+        const id = { _id: req.params.id };
 
         this.getCrushById(id)
             .then(crush => res.status(200).json({ "result": crush }))
@@ -28,7 +28,7 @@ class Controller {
         return Model.deleteOne(id);
     }
     delete(req, res) {
-        const id = { _id: req.param.id };
+        const id = { _id: req.params.id };
 
         this.deleteById(id)
             .then(crush => res.status(200).json({ "result": crush }))
@@ -39,9 +39,21 @@ class Controller {
         return Model.findByIdAndUpdate(id,data);
     }
     update(req, res) {
-        const id = { _id: req.param.id };
+        const id = { _id: req.params.id };
+        const crush = req.body;
 
-        this.deleteById(id)
+        this.updateCrush(id,crush)
+            .then(crush => res.status(200).json({ "result": crush }))
+            .catch(error => res.status(400).json({ "error": error }));
+    }
+
+    insertCrush(data) {
+        return Model.create(data);
+    }
+    insert(req, res) {
+        const crush = req.body;
+        
+        this.insertCrush(crush)
             .then(crush => res.status(200).json({ "result": crush }))
             .catch(error => res.status(400).json({ "error": error }));
     }
